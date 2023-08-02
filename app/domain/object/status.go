@@ -17,10 +17,11 @@ type Status struct {
 	Content *string `json:"content,omitempty"`
 
 	// URL to the header image
-	URL *string `json:"header,omitempty"`
+	URL *string `json:"url,omitempty"`
 
 	// The time the account was created
 	CreateAt time.Time `json:"create_at,omitempty" db:"create_at"`
+	Account  Account
 }
 
 // // Check if given password is match to account's password

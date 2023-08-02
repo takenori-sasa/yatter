@@ -14,7 +14,7 @@ CREATE TABLE `status` (
 `account_id` bigint NOT NULL,
 FOREIGN KEY (`account_id`) REFERENCES account(`id`)
         ON DELETE CASCADE,
-  `content` text,
+  `content` text NOT NULL,
   `url` text,
   `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)

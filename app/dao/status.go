@@ -47,5 +47,5 @@ func (r *status) CreateStatus(ctx context.Context, status *object.Status) (*obje
 		return nil, fmt.Errorf("failed to create status: %w", err)
 	}
 
-	return r.FindStatus(ctx, status.ID)
+	return r.FindStatus(ctx, status.AccountID)
 }
