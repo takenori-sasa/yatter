@@ -9,7 +9,7 @@ import (
 
 // Implementation of handler
 type handler struct {
-	ar repository.Account
+	ar repository.Status
 }
 
 // Create Handler for `/v1/accounts/`
@@ -17,8 +17,8 @@ func NewRouter(ar repository.Status) http.Handler {
 	r := chi.NewRouter()
 
 	h := &handler{ar}
-	r.Post("/", h.Create)
-	r.Get("/{username}", h.GetUserInfo)
+	r.Post("/", h.CreateStatus)
+	r.Get("/{id}", h.GetStatuses)
 
 	return r
 }
