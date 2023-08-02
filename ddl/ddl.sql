@@ -11,8 +11,8 @@ CREATE TABLE `account` (
 );
 CREATE TABLE `status` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-FOREIGN KEY (account_id)
-        REFERENCES account(id)
+`account_id` bigint NOT NULL,
+FOREIGN KEY (`account_id`) REFERENCES account(`id`)
         ON DELETE CASCADE,
   `content` text,
   `url` text,

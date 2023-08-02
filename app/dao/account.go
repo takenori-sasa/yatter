@@ -37,7 +37,7 @@ func (r *account) FindByUsername(ctx context.Context, username string) (*object.
 
 	return entity, nil
 }
-func (r *status) CreateUser(ctx context.Context, account *object.Account) (*object.Account, error) {
+func (r *account) CreateUser(ctx context.Context, account *object.Account) (*object.Account, error) {
 	_, err := r.db.Exec(`INSERT INTO account (username, password_hash) values(?, ?)`, account.Username, account.PasswordHash)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
