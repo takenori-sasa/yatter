@@ -8,7 +8,7 @@ import (
 
 type Status interface {
 	// Fetch account which has specified username
-	FindStatuses(ctx context.Context, username string) (*object.Account, error)
+	FindStatus(ctx context.Context, status *object.Status) (*object.Status, error)
 	// TODO: Add Other APIs
-	CreateStatus(ctx context.Context, account *object.Account) (*object.Account, error)
+	CreateStatus(ctx context.Context, status *object.Status) (*object.Status, error)
 }

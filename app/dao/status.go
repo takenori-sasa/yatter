@@ -24,7 +24,7 @@ func NewStatus(db *sqlx.DB) repository.Status {
 }
 
 // FindByUsername : ユーザ名からユーザを取得
-func (r *status) FindStatuses(ctx context.Context, username string) (*object.Account, error) {
+func (r *status) FindStatus(ctx context.Context, status *object.Status) (*object.Status, error) {
 	entity := new(object.Account)
 	err := r.db.QueryRowxContext(ctx, "select * from account where username = ?", username).StructScan(entity)
 	if err != nil {
@@ -37,8 +37,8 @@ func (r *status) FindStatuses(ctx context.Context, username string) (*object.Acc
 
 	return entity, nil
 }
-func (r *status) CreateStatus(ctx context.Context, account *object.Account) (*object.Account, error) {
-	_, err := r.db.Exec(`INSERT INTO account (username, password_hash) values(?, ?)`, account.Username, account.PasswordHash)
+func (r *status) CreateStatus(ctx context.Context, status *object.Status) (*object.Status, error) {
+	_, err := r.db.Exec(`INSERT INTO status (username, password_hash) values(?, ?)`, account.Username, account.PasswordHash)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil

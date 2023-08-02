@@ -8,30 +8,29 @@ import (
 )
 
 // Request body for `POST /v1/accounts`
-type AddRequest struct {
-	Username string
-	Password string
+type PostStatusInput struct {
+	Content string
 }
 
 // Handle request for `POST /v1/accounts`
 func (h *handler) CreateStatus(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	var req AddRequest
+	var req PostStatusInput
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	account := new(object.Account)
-	account.Username = req.Username
-	if err := account.SetPassword(req.Password); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	status := new(object.Status)
+	status.Content = &req.Content
+	// if err := account.SetPassword(req.Password); err != nil {
+	// 	http.Error(w, err.Error(), http.StatusInternalServerError)
+	// 	return
+	// }
 
 	// panic("Must Implement Account Registration")
-	res, err := h.ar.CreateUser(ctx, account)
+	res, err := h.ar.CreateStatus(ctx, status)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

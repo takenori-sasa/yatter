@@ -10,25 +10,14 @@ import (
 
 type Status struct {
 	// The internal ID of the account
-	ID int64 `json:"id,omitempty"`
-
-	// The username of the account
-	Username string `json:"username,omitempty"`
-
-	// The username of the account
-	PasswordHash string `json:"-" db:"password_hash"`
-
-	// The account's display name
-	DisplayName *string `json:"display_name,omitempty" db:"display_name"`
+	ID        int64 `json:"id,omitempty"`
+	AccountID int64 `json:"account_id,omitempty"`
 
 	// URL to the avatar image
-	Avatar *string `json:"avatar,omitempty"`
+	Content *string `json:"content,omitempty"`
 
 	// URL to the header image
-	Header *string `json:"header,omitempty"`
-
-	// Biography of user
-	Note *string `json:"note,omitempty"`
+	URL *string `json:"header,omitempty"`
 
 	// The time the account was created
 	CreateAt time.Time `json:"create_at,omitempty" db:"create_at"`

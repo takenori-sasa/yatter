@@ -31,7 +31,7 @@ func (h *handler) GetStatuses(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// panic("Must Implement Account Registration")
-	res, err := h.ar.CreateUser(ctx, account)
+	res, err := h.ar.CreateStatus(ctx, account)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
