@@ -13,18 +13,18 @@ import (
 
 type (
 	// Implementation for repository.Account
-	account struct {
+	status struct {
 		db *sqlx.DB
 	}
 )
 
 // Create accout repository
-func NewAccount(db *sqlx.DB) repository.Account {
-	return &account{db: db}
+func NewStatus(db *sqlx.DB) repository.Status {
+	return &status{db: db}
 }
 
 // FindByUsername : ユーザ名からユーザを取得
-func (r *account) FindByUsername(ctx context.Context, username string) (*object.Account, error) {
+func (r *status) FindByUsername(ctx context.Context, username string) (*object.Account, error) {
 	entity := new(object.Account)
 	err := r.db.QueryRowxContext(ctx, "select * from account where username = ?", username).StructScan(entity)
 	if err != nil {

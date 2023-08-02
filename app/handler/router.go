@@ -30,6 +30,7 @@ func NewRouter(ar repository.Account) http.Handler {
 
 	r.Mount("/v1/accounts", accounts.NewRouter(ar))
 	r.Mount("/v1/health", health.NewRouter())
+	r.Mount("/v1/statuses", statuses.NewRouter())
 
 	return r
 }
