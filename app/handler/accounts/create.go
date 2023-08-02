@@ -30,7 +30,13 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	panic("Must Implement Account Registration")
+	// panic("Must Implement Account Registration")
+	// note avatar headerの登録
+	account.DisplayName = &req.Username
+	defaultValue := "string"
+	account.Header = &defaultValue
+	account.Note = &defaultValue
+	account.Avatar = &defaultValue
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(account); err != nil {
