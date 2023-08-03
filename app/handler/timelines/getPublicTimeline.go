@@ -12,14 +12,26 @@ import (
 func (h *handler) GetPublicTimeline(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	IDParam := chi.URLParam(r, "id")
-	statusID, err := strconv.ParseInt(IDParam, 10, 64)
+	MaxIDParam := chi.URLParam(r, "max_id")
+	MaxID, err := strconv.ParseInt(MaxIDParam, 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	SinceIDParam := chi.URLParam(r, "since_id")
+	SinceID, err := strconv.ParseInt(SinceIDParam, 10, 64)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	LimitParam := chi.URLParam(r, "limit")
+	Limit, err := strconv.ParseInt(LimitParam, 10, 64)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	// int64の検査
-	res, err := h.ar.FindStatus(ctx, statusID)
+	res, err := h.tr.FindPublicTimeline(ctx, MaxID, SinceID, Limit)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

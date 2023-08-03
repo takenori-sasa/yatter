@@ -15,7 +15,7 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func NewRouter(ar repository.Account, sr repository.Status) http.Handler {
+func NewRouter(ar repository.Account, sr repository.Status, tr repository.Timeline) http.Handler {
 	r := chi.NewRouter()
 
 	// A good base middleware stack
@@ -33,7 +33,7 @@ func NewRouter(ar repository.Account, sr repository.Status) http.Handler {
 	r.Mount("/v1/accounts", accounts.NewRouter(ar))
 	r.Mount("/v1/health", health.NewRouter())
 	r.Mount("/v1/statuses", statuses.NewRouter(sr, ar))
-	r.Mount("/v1/timelines", timelines.NewRouter(sr, ar))
+	r.Mount("/v1/timelines", timelines.NewRouter(sr, ar, tr))
 
 	return r
 }
