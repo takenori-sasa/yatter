@@ -12,10 +12,9 @@ CREATE TABLE `account` (
 CREATE TABLE `status` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
 `account_id` bigint NOT NULL,
-FOREIGN KEY (`account_id`) REFERENCES account(`id`)
-        ON DELETE CASCADE,
   `content` text NOT NULL,
   `url` text,
   `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+INDEX idx_account_id (account_id),   CONSTRAINT fk_status_account_id FOREIGN KEY (account_id) REFERENCES  account (id)
 );

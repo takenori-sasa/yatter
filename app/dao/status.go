@@ -26,8 +26,8 @@ func NewStatus(db *sqlx.DB) repository.Status {
 // FindByUsername : ユーザ名からユーザを取得
 func (r *status) FindStatus(ctx context.Context, statusID int64) (*object.Status, error) {
 	entity := new(object.Status)
-	err := r.db.QueryRowxContext(ctx, "SELECT * FROM status WHERE status.id = ?", statusID).StructScan(entity)
-	// err := r.db.QueryRowxContext(ctx, "SELECT * FROM status JOIN account ON account.id=status.account_id WHERE status.id = ?", statusID).StructScan(entity)
+	// err := r.db.QueryRowxContext(ctx, "SELECT * FROM status WHERE status.id = ?", statusID).StructScan(entity)
+	err := r.db.QueryRowxContext(ctx, "SELECT status.* FROM status JOIN account ON account.id=status.account_id WHERE status.id = ?", statusID).StructScan(entity)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
