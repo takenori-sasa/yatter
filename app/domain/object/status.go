@@ -11,7 +11,7 @@ import (
 type Status struct {
 	// The internal ID of the account
 	ID        int64 `json:"id,omitempty"`
-	AccountID int64 `json:"account_id,omitempty"`
+	AccountID int64 `json:"account_id,omitempty" db:"account_id"`
 
 	// URL to the avatar image
 	Content *string `json:"content,omitempty"`
@@ -21,7 +21,7 @@ type Status struct {
 
 	// The time the account was created
 	CreateAt time.Time `json:"create_at,omitempty" db:"create_at"`
-	Account  Account
+	Account  Account   `json:"account,omitempty"`
 }
 
 // // Check if given password is match to account's password
