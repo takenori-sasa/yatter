@@ -38,7 +38,7 @@ func (r *status) FindStatus(ctx context.Context, statusID int64) (*object.Status
 	return entity, nil
 }
 func (r *status) CreateStatus(ctx context.Context, status *object.Status) (*object.Status, error) {
-	_, err := r.db.Exec(`INSERT INTO status (content, account_id) values(?, ?)`, status.Content, status.AccountID)
+	res, err := r.db.Exec(`INSERT INTO status (content, account_id) values(?, ?)`, status.Content, status.AccountID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
@@ -46,6 +46,10 @@ func (r *status) CreateStatus(ctx context.Context, status *object.Status) (*obje
 
 		return nil, fmt.Errorf("failed to create status: %w", err)
 	}
+	statusID, err := res.LastInsertId()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get statusID: %w", err)
+	}
 
-	return r.FindStatus(ctx, status.AccountID)
+	return r.FindStatus(ctx, statusID)
 }
