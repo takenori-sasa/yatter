@@ -14,10 +14,10 @@ type handler struct {
 }
 
 // Create Handler for `/v1/accounts/`
-func NewRouter(as repository.Status, ar repository.Account) http.Handler {
+func NewRouter(sr repository.Status, ar repository.Account) http.Handler {
 	r := chi.NewRouter()
 
-	h := &handler{as}
+	h := &handler{sr}
 	r.Get("/public", h.GetPublicTimeline)
 	r.Route("/", func(r chi.Router) {
 		r.Use(auth.Middleware(ar))

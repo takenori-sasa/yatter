@@ -19,7 +19,7 @@ func (h *handler) GetStatus(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// int64の検査
-	res, err := h.ar.FindStatus(ctx, statusID)
+	res, err := h.sr.FindStatus(ctx, statusID)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -33,7 +33,7 @@ func (h *handler) CreateStatus(w http.ResponseWriter, r *http.Request) {
 	// }
 
 	// panic("Must Implement Account Registration")
-	res, err := h.ar.CreateStatus(ctx, status)
+	res, err := h.sr.CreateStatus(ctx, status)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
