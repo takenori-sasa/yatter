@@ -24,20 +24,19 @@ func NewTimeline(db *sqlx.DB) repository.Timeline {
 	return &timeline{db: db}
 }
 
-func clampInt64(value, min, max int64) int64 {
-	if value < min {
-		return min
-	} else if value > max {
-		return max
+func (r *timeline) FindPublicTimeline(ctx context.Context, MaxID int64, SinceID int64, Limit int64) (*object.Timeline, error) {
+	if MaxID <= 0 {
+		MaxID = math.MaxInt64
 	}
-	return value
-}
-
-func (r *timeline) FindPublicTimeline(ctx context.Context, MaxID, SinceID, Limit int64) (*object.Timeline, error) {
-	MaxID = clampInt64(MaxID, 1, math.MaxInt64)
-	SinceID = clampInt64(SinceID, 0, math.MaxInt64)
-	Limit = clampInt64(Limit, 0, 80)
-
+	if SinceID < 0 {
+		SinceID = 0
+	}
+	if Limit < 0 {
+		Limit = 40
+	}
+	if Limit > 80 {
+		Limit = 80
+	}
 	entity := new(object.Timeline)
 	rows, err := r.db.QueryxContext(ctx, "SELECT * FROM status WHERE id > ? AND id<? LIMIT ? ", SinceID, MaxID, Limit)
 	if err != nil {
@@ -46,23 +45,32 @@ func (r *timeline) FindPublicTimeline(ctx context.Context, MaxID, SinceID, Limit
 		}
 		return nil, fmt.Errorf("failed to find statuses from db: %w", err)
 	}
-
 	for rows.Next() {
 		var s object.Status
 		err := rows.StructScan(&s)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan status from db: %w", err)
 		}
+		// fmt.Fprintf(s)
 		entity.Body = append(entity.Body, &s)
 	}
 	return entity, nil
+
 }
 
-func (r *timeline) FindHomeTimeline(ctx context.Context, MaxID, SinceID, Limit int64, account *object.Account) (*object.Timeline, error) {
-	MaxID = clampInt64(MaxID, 1, math.MaxInt64)
-	SinceID = clampInt64(SinceID, 0, math.MaxInt64)
-	Limit = clampInt64(Limit, 0, 80)
-
+func (r *timeline) FindHomeTimeline(ctx context.Context, MaxID int64, SinceID int64, Limit int64, account *object.Account) (*object.Timeline, error) {
+	if MaxID <= 0 {
+		MaxID = math.MaxInt64
+	}
+	if SinceID < 0 {
+		SinceID = 0
+	}
+	if Limit < 0 {
+		Limit = 40
+	}
+	if Limit > 80 {
+		Limit = 80
+	}
 	entity := new(object.Timeline)
 	rows, err := r.db.QueryxContext(ctx, "SELECT * FROM status WHERE id > ? AND id<? AND account_id=? LIMIT ? ", SinceID, MaxID, account.ID, Limit)
 	if err != nil {
@@ -71,14 +79,15 @@ func (r *timeline) FindHomeTimeline(ctx context.Context, MaxID, SinceID, Limit i
 		}
 		return nil, fmt.Errorf("failed to find statuses from db: %w", err)
 	}
-
 	for rows.Next() {
 		var s object.Status
 		err := rows.StructScan(&s)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan status from db: %w", err)
 		}
+		// fmt.Fprintf(s)
 		entity.Body = append(entity.Body, &s)
 	}
 	return entity, nil
+
 }
