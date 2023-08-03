@@ -26,7 +26,8 @@ func NewStatus(db *sqlx.DB) repository.Status {
 // FindByUsername : ユーザ名からユーザを取得
 func (r *status) FindStatus(ctx context.Context, statusID int64) (*object.Status, error) {
 	entity := new(object.Status)
-	err := r.db.QueryRowxContext(ctx, "select * from status where id = ?", statusID).StructScan(entity)
+	err := r.db.QueryRowxContext(ctx, "SELECT * FROM status WHERE status.id = ?", statusID).StructScan(entity)
+	// err := r.db.QueryRowxContext(ctx, "SELECT * FROM status JOIN account ON account.id=status.account_id WHERE status.id = ?", statusID).StructScan(entity)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
@@ -37,7 +38,9 @@ func (r *status) FindStatus(ctx context.Context, statusID int64) (*object.Status
 
 	return entity, nil
 }
+
 func (r *status) CreateStatus(ctx context.Context, status *object.Status) (*object.Status, error) {
+	// create
 	res, err := r.db.Exec(`INSERT INTO status (content, account_id) values(?, ?)`, status.Content, status.AccountID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -46,6 +49,7 @@ func (r *status) CreateStatus(ctx context.Context, status *object.Status) (*obje
 
 		return nil, fmt.Errorf("failed to create status: %w", err)
 	}
+	// primary取得
 	statusID, err := res.LastInsertId()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get statusID: %w", err)

@@ -21,7 +21,7 @@ type Status struct {
 
 	// The time the account was created
 	CreateAt time.Time `json:"create_at,omitempty" db:"create_at"`
-	Account  Account   `json:"account,omitempty"`
+	Account  *Account  `json:"account,omitempty" db:"account"`
 }
 
 // // Check if given password is match to account's password
