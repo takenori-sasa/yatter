@@ -5,7 +5,7 @@ package object
 // 今回は簡単のためstringで管理している。
 
 type Timeline struct {
-	Status []*Status
+	Body []*Status `json:"timeline,omitempty" db:"status"`
 }
 
 // // Check if given password is match to account's password
