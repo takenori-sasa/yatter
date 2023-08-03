@@ -58,3 +58,25 @@ func (r *status) CreateStatus(ctx context.Context, status *object.Status) (*obje
 
 	return r.FindStatus(ctx, statusID)
 }
+func (r *status) DeleteStatus(ctx context.Context, statusID int64) error {
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("failed to start transaction: %w", err)
+	}
+
+	_, err = tx.ExecContext(ctx, "DELETE FROM status WHERE id = ?", statusID)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil
+		}
+
+		tx.Rollback()
+		return fmt.Errorf("failed to delete status: %w", err)
+	}
+
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %w", err)
+	}
+
+	return nil
+}

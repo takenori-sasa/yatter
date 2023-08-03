@@ -11,4 +11,5 @@ type Status interface {
 	FindStatus(ctx context.Context, statusID int64) (*object.Status, error)
 	// TODO: Add Other APIs
 	CreateStatus(ctx context.Context, status *object.Status) (*object.Status, error)
+	DeleteStatus(ctx context.Context, statusID int64) error
 }
