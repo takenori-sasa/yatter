@@ -26,7 +26,7 @@ func NewStatus(db *sqlx.DB) repository.Status {
 // FindStatus retrieves a status by its ID
 func (r *status) FindStatus(ctx context.Context, statusID int64) (*object.Status, error) {
 	entity := new(object.Status)
-	err := r.db.QueryRowxContext(ctx, "SELECT status.*, account.id  AS `account.id`, account.username AS `account.username` FROM status JOIN account ON account.id=status.account_id WHERE status.id = ?", statusID).StructScan(entity)
+	err := r.db.QueryRowxContext(ctx, "SELECT status.*, account.id  AS `account.id`, account.username AS `account.username`,account.create_at AS `account.create_at` FROM status JOIN account ON account.id=status.account_id WHERE status.id = ?", statusID).StructScan(entity)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
