@@ -13,6 +13,13 @@ type handler struct {
 	sr repository.Status
 }
 
+// NewHandler returns a new handler instance.
+func NewHandler(sr repository.Status) *handler {
+	return &handler{
+		sr: sr,
+	}
+}
+
 // Create Handler for `/v1/accounts/`
 func NewRouter(sr repository.Status, ar repository.Account) http.Handler {
 	r := chi.NewRouter()
