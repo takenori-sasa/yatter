@@ -4,45 +4,26 @@ import (
 	"time"
 )
 
-// 本当はPasswordHashがハッシュされたパスワードであることを型で保証したい。
-// ハッシュ化されたパスワード用の型を用意してstringと区別して管理すると良い。
-// 今回は簡単のためstringで管理している。
-
+// Status is the main structure for storing statuses in the system.
+// Each status belongs to a particular Account (given by AccountID).
+// A Status has an ID, a content, a URL, and a creation timestamp.
+// The structure also contains a linked Account object for easier access to related data.
 type Status struct {
-	// The internal ID of the account
-	ID        int64 `json:"id,omitempty"`
+	// ID is the internal ID of the status.
+	ID int64 `json:"id,omitempty"`
+
+	// AccountID is the ID of the account that posted this status.
 	AccountID int64 `json:"account_id,omitempty" db:"account_id"`
 
-	// URL to the avatar image
+	// Content is the actual content of the status.
 	Content *string `json:"content,omitempty"`
 
-	// URL to the header image
+	// URL is a link to the full status (if applicable).
 	URL *string `json:"url,omitempty"`
 
-	// The time the account was created
+	// CreateAt is the time the status was created.
 	CreateAt time.Time `json:"create_at,omitempty" db:"create_at"`
-	Account  *Account  `json:"account,omitempty" db:"account"`
-}
 
-// // Check if given password is match to account's password
-// func (a *Account) CheckPassword(pass string) bool {
-// 	return bcrypt.CompareHashAndPassword([]byte(a.PasswordHash), []byte(pass)) == nil
-// }
-//
-// // Hash password and set it to account object
-// func (a *Account) SetPassword(pass string) error {
-// 	passwordHash, err := generatePasswordHash(pass)
-// 	if err != nil {
-// 		return fmt.Errorf("generate error: %w", err)
-// 	}
-// 	a.PasswordHash = passwordHash
-// 	return nil
-// }
-//
-// func generatePasswordHash(pass string) (string, error) {
-// 	hash, err := bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)
-// 	if err != nil {
-// 		return "", fmt.Errorf("hashing password failed: %w", err)
-// 	}
-// 	return string(hash), nil
-// }
+	// Account is the account that posted this status. It is included for easier access to related data.
+	Account *Account `json:"account,omitempty" db:"account"`
+}

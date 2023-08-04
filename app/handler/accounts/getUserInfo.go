@@ -2,6 +2,7 @@ package accounts
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -12,16 +13,28 @@ func (h *handler) GetUserInfo(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	username := chi.URLParam(r, "username")
-	res, err := h.ar.FindByUsername(ctx, username)
+	if username == "" {
+		http.Error(w, "Username is required", http.StatusBadRequest)
+		return
+	}
 
-	// panic("Must Implement Account Registration")
+	res, err := h.ar.FindByUsername(ctx, username)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("Failed to find user by username: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	if res == nil {
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(res); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	err = json.NewEncoder(w).Encode(res)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to encode response: %v", err), http.StatusInternalServerError)
 		return
 	}
+
+	w.WriteHeader(http.StatusOK)
 }

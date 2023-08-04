@@ -1,6 +1,7 @@
 package statuses
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -15,12 +16,12 @@ func (h *handler) DeleteStatus(w http.ResponseWriter, r *http.Request) {
 	// Convert string to int64
 	statusIDInt64, err := strconv.ParseInt(statusID, 10, 64)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, fmt.Sprintf("Invalid status ID: %v", err), http.StatusBadRequest)
 		return
 	}
 
 	if err := h.sr.DeleteStatus(r.Context(), statusIDInt64); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("Failed to delete status: %v", err), http.StatusInternalServerError)
 		return
 	}
 

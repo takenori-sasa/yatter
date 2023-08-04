@@ -13,7 +13,7 @@ type handler struct {
 	tr repository.Timeline
 }
 
-// Create Handler for `/v1/accounts/`
+// NewRouter creates a new router for the `/v1/timelines/` route
 func NewRouter(ar repository.Account, tr repository.Timeline) http.Handler {
 	r := chi.NewRouter()
 
@@ -22,7 +22,6 @@ func NewRouter(ar repository.Account, tr repository.Timeline) http.Handler {
 	r.Route("/", func(r chi.Router) {
 		r.Use(auth.Middleware(ar))
 		r.Get("/home", h.GetHomeTimeline)
-		// r.Delete("/{id}", h.DeleteStatus)
 	})
 	return r
 }
