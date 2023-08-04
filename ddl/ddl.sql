@@ -20,10 +20,10 @@ CREATE TABLE `status` (
   CONSTRAINT fk_status_account_id FOREIGN KEY (account_id) REFERENCES  account (id) ON DELETE CASCADE
 );
 CREATE TABLE `relationship` (
-  `following_id` bigint(20) NOT NULL,
-  `followed_id` bigint(20) NOT NULL,
+  `following` bigint(20) NOT NULL,
+  `followed_by` bigint(20) NOT NULL,
   `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`following_id`, `followed_id`),
-  CONSTRAINT `fk_relationship_following_id` FOREIGN KEY (`following_id`) REFERENCES `account` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_relationship_followed_id` FOREIGN KEY (`followed_id`) REFERENCES `account` (`id`) ON DELETE CASCADE
+  PRIMARY KEY (`following`, `followed_by`),
+  CONSTRAINT `fk_relationship_following` FOREIGN KEY (`following`) REFERENCES `account` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_relationship_followed_by` FOREIGN KEY (`followed_by`) REFERENCES `account` (`id`) ON DELETE CASCADE
 );
