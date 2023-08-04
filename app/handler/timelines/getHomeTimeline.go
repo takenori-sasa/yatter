@@ -53,7 +53,7 @@ func (h *handler) GetHomeTimeline(w http.ResponseWriter, r *http.Request) {
 	// Call FindHomeTimeline with parsed parameters and handle possible error
 	timeline, err := h.tr.FindHomeTimeline(ctx, MaxID, SinceID, Limit, account)
 	if err != nil {
-		http.Error(w, "Failed to retrieve home timeline", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 

@@ -2,6 +2,7 @@ package accounts
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"yatter-backend-go/app/domain/object"
@@ -39,7 +40,7 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	account.Username = req.Username
 	if err := account.SetPassword(req.Password); err != nil {
 		// Failed to set password
-		http.Error(w, "Failed to set password", http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("Failed to set password: %v", err.Error()), http.StatusInternalServerError)
 		return
 	}
 
@@ -47,7 +48,7 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	res, err := h.ar.CreateUser(ctx, account)
 	if err != nil {
 		// Failed to create user
-		http.Error(w, "Failed to create user", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -57,7 +58,7 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	// Encode and send response
 	if err := json.NewEncoder(w).Encode(res); err != nil {
 		// Failed to encode the response
-		http.Error(w, "Failed to encode the response", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }

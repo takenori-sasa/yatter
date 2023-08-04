@@ -21,7 +21,7 @@ func (h *handler) GetStatus(w http.ResponseWriter, r *http.Request) {
 	res, err := h.sr.FindStatus(ctx, statusID)
 
 	if err != nil {
-		http.Error(w, "Failed to find the status", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 

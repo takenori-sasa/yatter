@@ -21,7 +21,7 @@ func (h *handler) DeleteStatus(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.sr.DeleteStatus(r.Context(), statusIDInt64); err != nil {
-		http.Error(w, fmt.Sprintf("Failed to delete status: %v", err), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 

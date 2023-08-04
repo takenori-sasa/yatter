@@ -49,7 +49,7 @@ func (h *handler) GetPublicTimeline(w http.ResponseWriter, r *http.Request) {
 	// Call FindPublicTimeline function
 	timeline, err := h.tr.FindPublicTimeline(ctx, MaxID, SinceID, Limit)
 	if err != nil {
-		http.Error(w, "Failed to find public timeline", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 

@@ -35,7 +35,7 @@ func (h *handler) CreateStatus(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.sr.CreateStatus(ctx, status)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Failed to create status: %v", err), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
